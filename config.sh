@@ -29,7 +29,7 @@ E_KEY=80
 
 config_validate_key()
 {
-  exit 0
+  return 0
 }
 
 config_print()
