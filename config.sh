@@ -27,6 +27,11 @@ CONFIG=(
 
 E_KEY=80
 
+is_valid_key()
+{
+  exit 0
+}
+
 config_print()
 {
     echo "Config: Print: Active"
