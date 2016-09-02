@@ -27,7 +27,7 @@ CONFIG=(
 
 E_KEY=80
 
-is_valid_key()
+config_validate_key()
 {
   exit 0
 }
