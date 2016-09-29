@@ -108,3 +108,20 @@ config_parse_file_block()
 
   echo "$block_contents_parsed"
 }
+
+config_parse_file()
+{
+  local block_begin="$1"
+  local block_end="$2"
+  local conf_file="$3"
+  local curr_block=1
+
+  while :; do
+    local block_contents=$(config_parse_file_block "$block_begin" "$block_end" $curr_block "$conf_file")
+    if [ -z "$block_contents" ]; then
+      break
+    fi
+    config_set $curr_block "$block_contents"
+    (( curr_block++ ))
+  done
+}
