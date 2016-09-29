@@ -72,29 +72,3 @@ config_set()
 }
 
 
-config_parse_file()
-{
-    local fconf="./.syncconf"
-
-    while read -r line; do
-        local key=${line%=*}
-        local val=${line#*=}
-        case $key in
-            "$CONF_KEY_DEBUG" )
-                config_set "parm" "$CONF_KEY_DEBUG" "$val"
-                ;;
-            "$CONF_KEY_VERBOSE" )
-                config_set "parm" "$CONF_KEY_VERBOSE" "$val"
-                ;;
-            "$CONF_KEY_COPY" )
-                config_set "parm" "$CONF_KEY_COPY" "$val"
-                ;;
-            "$CONF_KEY_LINK" )
-                config_set "parm" "$CONF_KEY_LINK" "$val"
-                ;;
-            "$CONF_KEY_DARCH" )
-                config_set "parm" "$CONF_KEY_DARCH" "$val"
-                ;;
-        esac
-    done < $fconf
-}
