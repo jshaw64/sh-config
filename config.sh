@@ -92,4 +92,19 @@ config_parse_file_block()
           print v
     }' n=${block_num} < "${conf_file}"
   )
+
+  local block_contents_parsed=
+  while read -r line; do
+    if [ "$line" = "$block_begin" -o "$line" = "$block_end" ]; then
+      continue
+    fi
+    local key=${line%=*}
+    local val=${line#*=}
+    block_contents_parsed+="${val}${CONF_FS}"
+  done <<< "$block_contents_raw"
+
+  # Remove trailing CONF_FS
+  block_contents_parsed="${block_contents_parsed::${#block_contents_parsed}-1}"
+
+  echo "$block_contents_parsed"
 }
