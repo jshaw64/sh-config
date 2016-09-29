@@ -72,3 +72,24 @@ config_set()
 }
 
 
+config_parse_file_block()
+{
+  local block_begin="$1"
+  local block_end="$2"
+  local block_num=$3
+  local conf_file="$4"
+
+  local block_contents_raw=$(
+    awk '
+      /'${block_begin}'/ {
+        v = $0
+        while(!/'${block_end}'/) { 
+          if(!getline) 
+            exit
+          v = v ORS $0
+        }
+        if(++nr == n) 
+          print v
+    }' n=${block_num} < "${conf_file}"
+  )
+}
