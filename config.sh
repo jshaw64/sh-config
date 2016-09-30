@@ -28,12 +28,12 @@ config_get()
   local found=
 
   for entry in "${CONFIG[@]}" ; do
-      local key=${entry%%:*}
-      local value=${entry#*:}
-      if [ $key = $get_key ]; then
-          found="$value"
-          break
-      fi
+    local key=${entry%%${CONF_FS}*}
+    local value=${entry#*${CONF_FS}}
+    if [ $key = $get_key ]; then
+        found="$value"
+        break
+    fi
   done
 
   echo "$found"
@@ -47,24 +47,24 @@ config_set()
   local i=0
   local found=0
   for entry in "${CONFIG[@]}" ; do
-      local key=${entry%%=*}
-      local value=${entry#*=}
-      if [ "$key" = "$set_key" ]; then
-          CONFIG[$i]="${key}${CONF_FS}${set_val}"
-          found=1
-          break
-      fi
-      (( i++ ))
+    local key=${entry%%${CONF_FS}*}
+    local value=${entry#*${CONF_FS}}
+    if [ "$key" = "$set_key" ]; then
+      CONFIG[$i]="${key}${CONF_FS}${set_val}"
+      found=1
+      break
+    fi
+    (( i++ ))
   done
 
   if [ $found -eq 0 ]; then
-      config_validate_key "$set_key"
-      local is_valid_key=$?
-      if [ $is_valid_key -gt 0 ]; then
-          echo "Error: invalid key [${set_key}]"
-          exit $E_KEY
-      fi
-      CONFIG=( "${CONFIG[@]}" "${set_key}${CONF_FS}${set_val}" )
+    config_validate_key "$set_key"
+    local is_valid_key=$?
+    if [ $is_valid_key -gt 0 ]; then
+      echo "Error: invalid key [${set_key}]"
+      exit $E_KEY
+    fi
+    CONFIG=( "${CONFIG[@]}" "${set_key}${CONF_FS}${set_val}" )
   fi
 }
 
