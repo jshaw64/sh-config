@@ -15,8 +15,8 @@ config_print()
 {
   local i=0
   for entry in "${CONFIG[@]}" ; do
-      local key=${entry%%:*}
-      local value=${entry#*:}
+      local key=${entry%%$CONF_FS*}
+      local value=${entry#*$CONF_FS}
       printf "\t[$i] Key: [$key] Value: [$value]\n"
       (( i++ ))
   done
@@ -28,8 +28,8 @@ config_get()
   local found=
 
   for entry in "${CONFIG[@]}" ; do
-    local key=${entry%%${CONF_FS}*}
-    local value=${entry#*${CONF_FS}}
+    local key=${entry%%$CONF_FS*}
+    local value=${entry#*$CONF_FS}
     if [ $key = $get_key ]; then
         found="$value"
         break
@@ -47,8 +47,8 @@ config_set()
   local i=0
   local found=0
   for entry in "${CONFIG[@]}" ; do
-    local key=${entry%%${CONF_FS}*}
-    local value=${entry#*${CONF_FS}}
+    local key=${entry%%$CONF_FS*}
+    local value=${entry#*$CONF_FS}
     if [ "$key" = "$set_key" ]; then
       CONFIG[$i]="${key}${CONF_FS}${set_val}"
       found=1
